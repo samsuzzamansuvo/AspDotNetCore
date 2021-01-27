@@ -1,0 +1,61 @@
+﻿@model Product
+
+@{
+    ViewBag.Title = "Product Edit";
+}
+<div class="row">
+    <div class="col-md-8">
+        <h2>Product Edit</h2>
+        <form asp-controller="Product" asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="ProductId" />
+            <div class="form-group">
+                <label>Name</label>
+                <input asp-for="ProductName" class="form-control" />
+                <span asp-validation-for="ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Price</label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select asp-for="CategoryId" asp-items="@ViewBag.ListofCategry" class="form-control">
+                    <option value="">Select Category</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Image</label>
+                <img src="~/Images/@Model.UrlImage" width="80" height="80" class="change_edit" />
+                <input type="file" asp-for="UrlImage" class="form-control changeImage" />
+                <span asp-validation-for="UrlImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Update Product" class="btn btn-primary" style="width:auto" />
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    $(function () {
+        $('.changeImage').change(function () {
+            var input = this;
+            var url = $(this).val();
+            var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+            if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpg" || ext == "jpeg")) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('.change_edit').attr('src', e.target.result)
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                $('.change_edit').attr('src', '/Images/@Model.UrlImage')
+            }
+        })
+    });
+</script>
+
